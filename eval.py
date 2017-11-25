@@ -25,8 +25,9 @@ async def role(self, ctx, member:discord.Member):
 async def _eval(ctx, *, body):
     """Evaluates python code"""
     blocked_words = ['.delete()', 'os']
-    if body in blocked_words:
-        return await ctx.send('Your code contains certain blocked words.')
+    for x in blocked_words:
+        if x in body:
+            return await ctx.send('Your code contains certain blocked words.')
     env = {
         'ctx': ctx,
         'channel': ctx.channel,
@@ -63,6 +64,7 @@ async def _eval(ctx, *, body):
         if ret is None:
             if value:
                 try:
+                    
                     out = await ctx.send(f'```py\n{value}\n```')
                 except:
                     paginated_text = ctx.paginate(value)
