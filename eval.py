@@ -8,7 +8,7 @@ import textwrap
 import traceback
 from contextlib import redirect_stdout
 
-bot = commands.Bot(command_prefix='_')
+bot = commands.Bot(command_prefix=commands.when_mentioned_or('_'))
 
 @bot.event
 async def on_connect():
