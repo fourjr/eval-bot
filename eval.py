@@ -9,17 +9,22 @@ import traceback
 from contextlib import redirect_stdout
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('_'))
-
+bot.remove_command('help')
 @bot.event
 async def on_connect():
     print("print('connected')")
     bot._last_result = None
 
+@commands.check(lambda ctx: ctx.author.id == 180314310298304512)
+async def role(self, ctx, member:discord.Member):
+    #await member.add_roles
+    pass
+
 @commands.check(lambda ctx: discord.utils.get(discord.utils.get(bot.guilds, id=345787308282478592).roles, id=383188931384180737) in ctx.author.roles)
 @bot.command(name='eval')
-async def _eval(ctx, body):
+async def _eval(ctx, *, body):
     """Evaluates python code"""
-    blocked_words = ['.delete()']
+    blocked_words = ['.delete()', 'os']
     if body in blocked_words:
         return await ctx.send('Your code contains certain blocked words.')
     env = {
@@ -44,7 +49,7 @@ async def _eval(ctx, body):
         exec(to_compile, env)
     except Exception as e:
         err = await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
-        return await err.add_reaction('\u2049')
+        return await ctx.message.add_reaction('\u2049')
 
     func = env['func']
     try:
@@ -79,9 +84,9 @@ async def _eval(ctx, body):
                     await ctx.send(f'```py\n{page}\n```')
 
     if out:
-        await out.add_reaction('\u2705')  # tick
+        await ctx.message.add_reaction('\u2705')  # tick
     elif err:
-        await err.add_reaction('\u2049')  # x
+        await ctx.message.add_reaction('\u2049')  # x
     else:
         await ctx.message.add_reaction('\u2705')
 
