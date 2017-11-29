@@ -112,7 +112,7 @@ async def require(ctx, *, requirement):
     '''Add requirements into req.txt'''
     #fill up content
     with open('requirements.txt') as f:
-        content = f.read() + requirement
+        content = f.read() + '\n' + requirement
     #get gittoken
     with open('config.json') as f:
         token = json.load(f).get('gittoken') or os.environ.get('gittoken')
