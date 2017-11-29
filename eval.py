@@ -6,29 +6,29 @@ import inspect
 import io
 import textwrap
 import traceback
+import aiohttp
 from contextlib import redirect_stdout
+import base64
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('_'))
 bot.remove_command('help')
+
 @bot.event
 async def on_connect():
     print("print('connected')")
     bot._last_result = None
     bot.grok = bot.get_guild(345787308282478592)
-
-@commands.check(lambda ctx: ctx.author.id == 180314310298304512)
-async def role(self, ctx, member:discord.Member):
-    #await member.add_roles
-    pass
+    bot.session = aiohttp.ClientSession()
 
 @commands.check(lambda ctx: discord.utils.get(bot.grok.roles, id=383188931384180737) in bot.grok.get_member(ctx.author.id).roles)
 @bot.command(name='eval')
 async def _eval(ctx, *, body):
     """Evaluates python code"""
     blocked_words = ['.delete()', 'os']
-    for x in blocked_words:
-        if x in body:
-            return await ctx.send('Your code contains certain blocked words.')
+    if ctx.author.id != 180314310298304512:
+        for x in blocked_words:
+            if x in body:
+                return await ctx.send('Your code contains certain blocked words.')
     env = {
         'ctx': ctx,
         'channel': ctx.channel,
@@ -107,6 +107,31 @@ def get_syntax_error(e):
         return f'```py\n{e.__class__.__name__}: {e}\n```'
     return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
+@bot.command()
+async def require(ctx, *, requirement):
+    '''Add requirements into req.txt'''
+    #fill up content
+    with open('requirements.txt') as f:
+        content = f.read() + requirement
+    #get gittoken
+    with open('config.json') as f:
+        token = json.load(f).get('gittoken') or os.environ.get('gittoken')
+    #get username
+    async with bot.session.get('https://api.github.com/user', headers={"Authorization": f"Bearer {token}"}) as resp: #get username 
+        if 300 > resp.status >= 200:
+            username = (await resp.json())['login']
+    #get sha (dont even know why this is a compulsory field)
+    async with bot.session.get(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"Bearer {token}"}) as resp2:
+        if 300 > resp2.status >= 200:
+            #push to path
+            async with bot.session.put(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"Bearer {token}"}, json={"path":"requirements.txt", "message":f"Add {requirement} to req.txt", "content":base64.b64encode(bytes(content, 'utf-8')).decode('ascii'), "sha":(await resp2.json())['sha'], "branch":"master"}) as resp3:
+                if 300 > resp3.status >= 200:
+                    await ctx.send('Done! Restarting...')
+                    #data pushed successfully
+                else:
+                    await ctx.send('Well, I failed somehow, send the following to `4JR#2713` (180314310298304512): ```py\n' + str(await resp3.json()) + '\n```')
+        else:
+            await ctx.send('Well, I failed somehow, send the following to `4JR#2713` (180314310298304512): ```py\n' + str(await resp2.json()) + '\n```')
 
 try:
     with open('config.json') as f:
