@@ -20,7 +20,7 @@ async def role(self, ctx, member:discord.Member):
     #await member.add_roles
     pass
 
-guild = bot.get_guild(345787308282478592)
+grok = bot.get_guild(345787308282478592)
 
 @commands.check(lambda ctx: discord.utils.get(grok.roles, id=383188931384180737) in grok.get_member(ctx.author.id).roles)
 @bot.command(name='eval')
