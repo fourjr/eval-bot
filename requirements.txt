@@ -1,1 +1,1 @@
-git+https://github.com/Rapptz/discord.py@rewritecr-async
+git+https://github.com/Rapptz/discord.py@rewrite
