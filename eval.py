@@ -47,6 +47,19 @@ async def _eval(ctx, *, body):
 
     to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
 
+    def paginate(text: str):
+        '''Simple generator that paginates text.'''
+        last = 0
+        pages = []
+        for curr in range(0, len(text)):
+            if curr % 1980 == 0:
+                pages.append(text[last:curr])
+                last = curr
+                appd_index = curr
+        if appd_index != len(text)-1:
+            pages.append(text[last:curr])
+        return list(filter(lambda a: a != '', pages))
+    
     try:
         exec(to_compile, env)
     except Exception as e:
@@ -68,7 +81,7 @@ async def _eval(ctx, *, body):
                     
                     out = await ctx.send(f'```py\n{value}\n```')
                 except:
-                    paginated_text = ctx.paginate(value)
+                    paginated_text = paginate(value)
                     for page in paginated_text:
                         if page == paginated_text[-1]:
                             out = await ctx.send(f'```py\n{page}\n```')
@@ -79,7 +92,7 @@ async def _eval(ctx, *, body):
             try:
                 out = await ctx.send(f'```py\n{value}{ret}\n```')
             except:
-                paginated_text = ctx.paginate(f"{value}{ret}")
+                paginated_text = paginate(f"{value}{ret}")
                 for page in paginated_text:
                     if page == paginated_text[-1]:
                         out = await ctx.send(f'```py\n{page}\n```')
