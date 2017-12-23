@@ -3,3 +3,4 @@ crasync
 psutil
 bs4
 requests
+aiohttp
