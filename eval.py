@@ -24,7 +24,7 @@ async def on_connect():
 @bot.command(name='eval')
 async def _eval(ctx, *, body):
     """Evaluates python code"""
-    blocked_words = ['.delete()', 'os', subprocess]
+    blocked_words = ['.delete()', 'os', 'subprocess']
     if ctx.author.id != 180314310298304512:
         for x in blocked_words:
             if x in body:
