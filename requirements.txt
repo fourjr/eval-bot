@@ -4,3 +4,4 @@ psutil
 bs4
 requests
 aiohttp
+clashroyale
