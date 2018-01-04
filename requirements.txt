@@ -6,3 +6,4 @@ requests
 aiohttp
 clashroyale
 motor
+dnspython
