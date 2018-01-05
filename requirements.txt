@@ -8,3 +8,4 @@ clashroyale
 motor
 dnspython
 git+https://github.com/cgrok/clashroyale
+git+https://www.github.com/cgrok/clashroyale
