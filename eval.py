@@ -17,18 +17,12 @@ bot.remove_command('help')
 async def on_connect():
     print("print('connected')")
     bot._last_result = None
-    bot.grok = bot.get_guild(345787308282478592)
     bot.session = aiohttp.ClientSession()
 
-@commands.check(lambda ctx: discord.utils.get(bot.grok.roles, id=383188931384180737) in bot.grok.get_member(ctx.author.id).roles)
+
 @bot.command(name='eval')
 async def _eval(ctx, *, body):
     """Evaluates python code"""
-    blocked_words = ['.delete()', 'os', 'subprocess']
-    if ctx.author.id != 180314310298304512:
-        for x in blocked_words:
-            if x in body:
-                return await ctx.send('Your code contains certain blocked words.')
     env = {
         'ctx': ctx,
         'channel': ctx.channel,
@@ -121,7 +115,6 @@ def get_syntax_error(e):
         return f'```py\n{e.__class__.__name__}: {e}\n```'
     return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
-@commands.check(lambda ctx: discord.utils.get(bot.grok.roles, id=383188931384180737) in bot.grok.get_member(ctx.author.id).roles)
 @bot.command()
 async def require(ctx, *, requirement):
     '''Add requirements into req.txt'''
