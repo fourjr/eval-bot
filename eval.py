@@ -22,7 +22,7 @@ async def on_connect():
 
 @bot.event
 async def on_message(message):
-    if message.guild is not None ormessage.author.id != 180314310298304512:
+    if message.guild is not None or message.author.id == 180314310298304512:
         await bot.process_commands(message)
 
 @commands.check(lambda ctx: discord.utils.get(bot.grok.roles, id=383188931384180737) in bot.grok.get_member(ctx.author.id).roles)
