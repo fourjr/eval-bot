@@ -14,3 +14,4 @@ lxml
 git+https://github.com/cgrok/clashroyale
 tweepy
 oauthlib
+4jr
