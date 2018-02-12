@@ -1,4 +1,4 @@
-git+https://github.com/Rapptz/discord.py@rewrit
+git+https://github.com/Rapptz/discord.py@rewrite
 psutil
 bs4
 requests
