@@ -12,3 +12,4 @@ oauthlib
 pynite
 
 lavalink
+brawlstars
