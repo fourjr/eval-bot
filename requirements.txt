@@ -10,3 +10,5 @@ lxml
 tweepy
 oauthlib
 pynite
+
+lavalink
