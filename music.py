@@ -4,6 +4,7 @@ import re
 import discord
 from discord.ext import commands
 import lavalink
+import asyncio
 
 time_rx = re.compile('[0-9]+')
 
@@ -11,10 +12,18 @@ time_rx = re.compile('[0-9]+')
 class Music:
     def __init__(self, bot):
         self.bot = bot
-        lavalink.Client(bot=bot, password='testtt', loop=self.bot.loop, log_level='debug')
+        bot.loop.create_task(self.__ainit__())
 
+    async def __local_check(self, ctx):
+        if not getattr(self.bot, 'lavalink', False):
+            await ctx.send('Music cog is still initialising')
+            return False
+        return True
+
+    async def __ainit__(self):
+        await asyncio.sleep(5)
+        lavalink.Client(bot=self.bot, password='testtt', loop=self.bot.loop, log_level='debug')
         self.bot.lavalink.client.register_hook(self.track_hook)
-        # As of 2.0, lavalink.Client will be available via self.bot.lavalink.client
 
     async def track_hook(self, player, event):
         if event == 'TrackStartEvent':
