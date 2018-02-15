@@ -21,7 +21,7 @@ class Music:
         return True
 
     async def __ainit__(self):
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
         lavalink.Client(bot=self.bot, password='testtt', loop=self.bot.loop, log_level='debug')
         self.bot.lavalink.client.register_hook(self.track_hook)
 
