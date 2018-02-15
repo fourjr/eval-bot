@@ -14,11 +14,12 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or('_'))
 bot.remove_command('help')
 
 @bot.event
-async def on_connect():
+async def on_ready():
     print("print('connected')")
     bot._last_result = None
     bot.grok = bot.get_guild(345787308282478592)
-    bot.session = aiohttp.ClientSession()
+    bot.session = aiohttp.ClientSession(loop=bot.loop)
+    bot.load_extension('music')
 
 @bot.event
 async def on_message(message):
