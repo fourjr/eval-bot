@@ -137,17 +137,17 @@ async def require(ctx, *, requirement):
     with open('requirements.txt') as f:
         content = f.read() + '\n' + requirement
     #get gittoken
-    with open('config.json') as f:
+    with open('config/config.json') as f:
         token = json.load(f).get('gittoken') or os.environ.get('gittoken')
     #get username
-    async with bot.session.get('https://api.github.com/user', headers={"Authorization": f"Bearer {token}"}) as resp: #get username 
+    async with bot.session.get('https://api.github.com/user', headers={"Authorization": f"token {token}"}) as resp: #get username 
         if 300 > resp.status >= 200:
             username = (await resp.json())['login']
     #get sha (dont even know why this is a compulsory field)
-    async with bot.session.get(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"Bearer {token}"}) as resp2:
+    async with bot.session.get(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"token {token}"}) as resp2:
         if 300 > resp2.status >= 200:
             #push to path
-            async with bot.session.put(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"Bearer {token}"}, json={"path":"requirements.txt", "message":f"Add {requirement} to req.txt", "content":base64.b64encode(bytes(content, 'utf-8')).decode('ascii'), "sha":(await resp2.json())['sha'], "branch":"master"}) as resp3:
+            async with bot.session.put(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"token {token}"}, json={"path":"requirements.txt", "message":f"Add {requirement} to req.txt", "content":base64.b64encode(bytes(content, 'utf-8')).decode('ascii'), "sha":(await resp2.json())['sha'], "branch":"master"}) as resp3:
                 if 300 > resp3.status >= 200:
                     await ctx.send('Done! Restarting...')
                     #data pushed successfully
