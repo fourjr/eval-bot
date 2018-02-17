@@ -2,13 +2,16 @@ import discord
 from discord.ext import commands
 import os
 import json
+### EVAL ###
 import inspect
 import io
 import textwrap
 import traceback
 import aiohttp
 from contextlib import redirect_stdout
+### EVAL ###
 import base64
+import json
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('_'))
 bot.remove_command('help')
@@ -17,16 +20,15 @@ bot.remove_command('help')
 async def on_ready():
     print("print('connected')")
     bot._last_result = None
-    bot.grok = bot.get_guild(345787308282478592)
+    bot.allowed = json.load(open('config/access.json'))
     bot.session = aiohttp.ClientSession(loop=bot.loop)
-    bot.load_extension('music')
 
 @bot.event
 async def on_message(message):
     if message.guild is not None or message.author.id == 180314310298304512:
         await bot.process_commands(message)
 
-@commands.check(lambda ctx: discord.utils.get(bot.grok.roles, id=383188931384180737) in bot.grok.get_member(ctx.author.id).roles)
+@commands.check(lambda ctx: return ctx.author.id in bot.allowed)
 @bot.command(name='eval')
 async def _eval(ctx, *, body):
     """Evaluates python code"""
