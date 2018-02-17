@@ -157,7 +157,7 @@ async def require(ctx, *, requirement):
             await ctx.send('Well, I failed somehow, send the following to `4JR#2713` (180314310298304512): ```py\n' + str(await resp2.json()) + '\n```')
 
 try:
-    with open('config.json') as f:
+    with open('config/config.json') as f:
         token = json.load(f).get('token') or os.environ.get('token')
     bot.run(token, reconnect=True)
 except Exception as e:
