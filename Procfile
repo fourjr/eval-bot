@@ -1,2 +1,1 @@
-worker: python eval.py
-urgentworker: java -jar Lavalink.jar
+worker: python src/eval.py
