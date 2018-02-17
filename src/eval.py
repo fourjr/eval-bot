@@ -129,7 +129,7 @@ def get_syntax_error(e):
         return f'```py\n{e.__class__.__name__}: {e}\n```'
     return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
-@commands.check(lambda ctx: discord.utils.get(bot.grok.roles, id=383188931384180737) in bot.grok.get_member(ctx.author.id).roles)
+@commands.check(lambda ctx: ctx.author.id in bot.allowed)
 @bot.command()
 async def require(ctx, *, requirement):
     '''Add requirements into req.txt'''
@@ -144,10 +144,10 @@ async def require(ctx, *, requirement):
         if 300 > resp.status >= 200:
             username = (await resp.json())['login']
     #get sha (dont even know why this is a compulsory field)
-    async with bot.session.get(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"token {token}"}) as resp2:
+    async with bot.session.get(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"Bearer {token}"}) as resp2:
         if 300 > resp2.status >= 200:
             #push to path
-            async with bot.session.put(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"token {token}"}, json={"path":"requirements.txt", "message":f"Add {requirement} to req.txt", "content":base64.b64encode(bytes(content, 'utf-8')).decode('ascii'), "sha":(await resp2.json())['sha'], "branch":"master"}) as resp3:
+            async with bot.session.put(f'https://api.github.com/repos/fourjr/eval-bot/contents/requirements.txt', headers={"Authorization": f"Bearer {token}"}, json={"path":"requirements.txt", "message":f"Add {requirement} to req.txt", "content":base64.b64encode(bytes(content, 'utf-8')).decode('ascii'), "sha":(await resp2.json())['sha'], "branch":"master"}) as resp3:
                 if 300 > resp3.status >= 200:
                     await ctx.send('Done! Restarting...')
                     #data pushed successfully
