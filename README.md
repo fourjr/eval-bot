@@ -11,20 +11,20 @@ git clone https://github.com/fourjr/eval-bot@raw
 
 If you use the `master ` branch, you would have the bot that I currently use, which includes the list of allowed people and requirements.
 
-In the `raw` branch, there is a default set of requirements needed for the bot to function in `requirements.txt`. Do not remove any of them.
+In the raw branch, there is a default set of requirements needed for the bot to function in `requirements.txt`. Do not remove any of them.
 
 ### Config
 Head over to the config folder, fill up `config.json` as so:
 ```json
 {
-    "token":"discord bot token",
-    "gittoken":"code recieved from git auth described below, but technically this is useless :/"
+	"token":"discord bot token",
+	"gittoken":"code recieved from git auth described below, but technically this is useless :/"
 }
 ```
 Fill up `access.json` with an array of user IDs that are allowed to use the bot. If you add the `"public" ` element to the array, anyone can use the bot.
 ```json
 [
-    "public"
+	"public"
 ]
 ```
 Anyone can use the bot with the above config. The element has to be the first element.
