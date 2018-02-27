@@ -27,7 +27,7 @@ Fill up `access.json` with an array of user IDs that are allowed to use the bot.
 	"public"
 ]
 ```
-Anyone can use the bot with the above config. The element has to be the first element.
+Anyone can use the bot with the above config.
 
 ### What about Heroku?
 The bot is already made to work with the Heroku platform.
