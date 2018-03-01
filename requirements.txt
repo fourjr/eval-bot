@@ -10,5 +10,6 @@ lxml
 tweepy
 oauthlib
 pynite
-PIL
+Pillow
+lavalink
 brawlstars
