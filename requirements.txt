@@ -13,3 +13,4 @@ pynite
 Pillow
 lavalink
 brawlstars
+aioconsole
