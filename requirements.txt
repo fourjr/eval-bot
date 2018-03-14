@@ -9,7 +9,7 @@ dnspython
 lxml
 tweepy
 oauthlib
-yaml
+pyyaml
 pynite
 Pillow
 lavalink
