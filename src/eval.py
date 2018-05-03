@@ -29,7 +29,7 @@ async def on_message(message):
     if message.guild is not None or message.author.id == bot.owner_id:
         await bot.process_commands(message)
 
-@commands.check(lambda ctx: bot.allowed or ctx.author.id in bot.allowed)
+@commands.check(lambda ctx: ctx.author.id in bot.allowed)
 @bot.command(name='eval')
 async def _eval(ctx, *, body):
     """Evaluates python code"""
